@@ -46,7 +46,7 @@ class DestroyMeetingTest extends TestCase
             "status" => "aktif",
             "division_id" => $division->id,
         ]);
-        $this->assertDatabaseHas('meEtings', ['id' => $meeting->id]);
+        $this->assertDatabaseHas('meetings', ['id' => $meeting->id]);
         $meeting->delete();
         $this->assertDatabaseMissing('meetings', ['id' => $meeting->id]);
     }
