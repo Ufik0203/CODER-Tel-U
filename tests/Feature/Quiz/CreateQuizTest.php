@@ -85,7 +85,7 @@ class CreateQuizTest extends TestCase
             'division_id' => $division->id,
         ];
 
-        // Validasi data yang tidak valid menggunakan Laravel Validator
+        // Validasi data yang tidak valid menggunakan 
         $validator = Validator::make($invalidQuizData, [
             'title' => 'required|string|max:255',
             'slug' => 'required|string|max:255',
