@@ -21,7 +21,7 @@ class DestroyTaskTest extends TestCase
         // Membuat data division awal
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);

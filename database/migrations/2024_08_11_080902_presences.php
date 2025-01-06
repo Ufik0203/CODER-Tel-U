@@ -20,7 +20,6 @@ return new class extends Migration
             $table->foreign('division_id')->references('id')->on('divisions');
             $table->timestamps();
         });
-
     }
 
     /**

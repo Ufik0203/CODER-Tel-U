@@ -31,7 +31,7 @@ class CreateTaskTest extends TestCase
         // Membuat data division
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
