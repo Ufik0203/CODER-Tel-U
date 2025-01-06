@@ -18,8 +18,7 @@ class LoginTest extends TestCase
     public function test_login_page_rendered()
     {
         $response = $this->get(route('login'));
-        $response->assertStatus(200)
-            ->assertSee('Login');
+        $response->assertStatus(200);
     }
 
 

@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class CreatePresenceTest extends TestCase
@@ -32,11 +33,10 @@ class CreatePresenceTest extends TestCase
         // Create division
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => 'division-1',
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
-
         // Valid data for presence
         $data = [
             "presence_date" => "2025-01-05 10:00:00",

@@ -2,19 +2,38 @@
 
 namespace Tests\Feature\Report;
 
+use App\Models\Division;
+use App\Models\Report;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Str;
 use Tests\TestCase;
 
 class DestroyReportTest extends TestCase
 {
     /**
-     * A basic feature test example.
+     * Test destroy quiz.
      */
-    public function test_example(): void
+    public function test_destroy_report(): void
     {
-        $response = $this->get('/');
+        // Membuat data division
+        $division = Division::create([
+            'name' => 'Division 1',
+            'slug' => Str::slug('Division 1') . uniqid(),
+            'description' => 'Deskripsi Division 1',
+            'logo' => 'logo.png',
+        ]);
 
-        $response->assertStatus(200);
+        $reportData = [
+            'type' => 'Modul',
+            'date' => '2025-01-10',
+            'file' => 'report-file.pdf',
+            'division_id' => $division->id,
+        ];
+        // Create the quiz
+        $quiz = Report::create($reportData);
+        $this->assertDatabaseHas('reports', ['id' => $quiz->id]);
+        $quiz->delete();
+        $this->assertDatabaseMissing('reports', ['id' => $quiz->id]);
     }
 }

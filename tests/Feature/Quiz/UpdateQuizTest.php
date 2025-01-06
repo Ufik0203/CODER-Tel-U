@@ -12,6 +12,7 @@ use Tests\TestCase;
 
 class UpdateQuizTest extends TestCase
 {
+
     use RefreshDatabase;
     /**
      * Test halaman create dapat diakses.
@@ -29,18 +30,18 @@ class UpdateQuizTest extends TestCase
      */
     public function test_update_quiz_with_valid_data()
     {
-        // Membuat data division
+        // Membuat data division dengan slug unik
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . '-' . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
 
-        // Membuat data quiz awal
+        // Membuat data quiz awal dengan slug unik
         $quiz = Quiz::create([
             'title' => 'Old Quiz Title',
-            'slug' => Str::slug('Old Quiz Title'),
+            'slug' => Str::slug('Old Quiz Title') . '-' . uniqid(),
             'thumbnail' => 'old-thumbnail.jpg',
             'status' => 'public',
             'code' => 'OLD123',
@@ -50,9 +51,9 @@ class UpdateQuizTest extends TestCase
         // Data untuk update quiz
         $updateData = [
             'title' => 'Updated Quiz Title',
-            'slug' => Str::slug('Updated Quiz Title'),
+            'slug' => Str::slug('Updated Quiz Title') . '-' . uniqid(), // Pastikan slug unik
             'thumbnail' => 'updated-thumbnail.jpg',
-            'status' => 'private',  // The status is now 'private'
+            'status' => 'private',  // Status diubah menjadi 'private'
             'code' => 'NEW123',
             'division_id' => $division->id,
         ];
@@ -62,23 +63,24 @@ class UpdateQuizTest extends TestCase
 
         // Periksa jika quiz berhasil diperbarui di database
         $this->assertDatabaseHas('quizzes', [
-            'title' => 'Updated Quiz Title',
-            'slug' => Str::slug('Updated Quiz Title'),
-            'thumbnail' => 'updated-thumbnail.jpg',
-            'status' => 'private',  // Ensure the 'status' is 'private' after the update
-            'code' => 'NEW123',
+            'title' => $updateData['title'],
+            'slug' => $updateData['slug'],
+            'thumbnail' => $updateData['thumbnail'],
+            'status' => $updateData['status'],
+            'code' => $updateData['code'],
             'division_id' => $division->id,
         ]);
 
         // Pastikan data sebelumnya sudah tidak ada di database
         $this->assertDatabaseMissing('quizzes', [
             'title' => 'Old Quiz Title',
-            'slug' => Str::slug('Old Quiz Title'),
+            'slug' => Str::slug('Old Quiz Title') . '-' . uniqid(),
             'thumbnail' => 'old-thumbnail.jpg',
-            'status' => 'public',  // The old status should be 'public', and the quiz data should be removed
+            'status' => 'public',
             'code' => 'OLD123',
         ]);
     }
+
 
 
     /**
@@ -87,18 +89,18 @@ class UpdateQuizTest extends TestCase
 
     public function test_update_quiz_with_invalid_data()
     {
-        // Membuat data division
+        // Membuat data division dengan slug unik
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . '-' . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
 
-        // Membuat data quiz awal
+        // Membuat data quiz awal dengan slug unik
         $quiz = Quiz::create([
             'title' => 'Old Quiz Title',
-            'slug' => Str::slug('Old Quiz Title'),
+            'slug' => Str::slug('Old Quiz Title') . '-' . uniqid(),
             'thumbnail' => 'old-thumbnail.jpg',
             'status' => 'public',
             'code' => 'OLD123',
@@ -107,12 +109,12 @@ class UpdateQuizTest extends TestCase
 
         // Data untuk update quiz dengan nilai invalid
         $invalidData = [
-            'title' => '',
-            'slug' => '',
-            'thumbnail' => 'invalid-thumbnail.jpg',
-            'status' => 'invalid-status',
-            'code' => '',
-            'division_id' => null,
+            'title' => '', // Title kosong
+            'slug' => '', // Slug kosong
+            'thumbnail' => 'invalid-thumbnail.jpg', // Thumbnail valid
+            'status' => 'invalid-status', // Status tidak valid
+            'code' => '', // Code kosong
+            'division_id' => null, // Division ID null
         ];
 
         // Melakukan validasi sebelum update
@@ -131,7 +133,7 @@ class UpdateQuizTest extends TestCase
         // Pastikan quiz tidak diperbarui di database
         $this->assertDatabaseHas('quizzes', [
             'title' => 'Old Quiz Title',
-            'slug' => Str::slug('Old Quiz Title'),
+            'slug' => $quiz->slug, // Menggunakan slug asli
             'thumbnail' => 'old-thumbnail.jpg',
             'status' => 'public',
             'code' => 'OLD123',

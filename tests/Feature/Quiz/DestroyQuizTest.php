@@ -11,7 +11,6 @@ use Tests\TestCase;
 
 class DestroyQuizTest extends TestCase
 {
-    use RefreshDatabase;
     /**
      * Test destroy quiz.
      */
@@ -20,7 +19,7 @@ class DestroyQuizTest extends TestCase
         // Membuat data division
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
@@ -29,7 +28,7 @@ class DestroyQuizTest extends TestCase
         $quizData = [
             'id' => rand(1, 1000),
             'title' => 'Sample Quiz',
-            'slug' => Str::slug('Sample Quiz'),
+            'slug' => Str::slug('Sample Quiz') . uniqid(),
             'thumbnail' => 'thumbnail.jpg',
             'status' => 'public',
             'code' => 'ABC123',

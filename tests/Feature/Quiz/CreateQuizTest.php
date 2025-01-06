@@ -12,7 +12,6 @@ use Tests\TestCase;
 
 class CreateQuizTest extends TestCase
 {
-    use RefreshDatabase;
 
     /**
      * Test halaman create dapat diakses.
@@ -32,7 +31,7 @@ class CreateQuizTest extends TestCase
         // Membuat data division
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
@@ -70,7 +69,7 @@ class CreateQuizTest extends TestCase
         // Membuat data division
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);

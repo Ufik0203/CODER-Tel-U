@@ -12,8 +12,8 @@ use Tests\TestCase;
 
 class CreateReportTest extends TestCase
 {
-    use RefreshDatabase;
 
+    use RefreshDatabase;
     /**
      * Test halaman create dapat diakses.
      */
@@ -33,7 +33,7 @@ class CreateReportTest extends TestCase
         // Mock data for the test
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
@@ -67,7 +67,7 @@ class CreateReportTest extends TestCase
         // Mock data for the test
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => Str::slug('Division 1'),
+            'slug' => Str::slug('Division 1') . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
