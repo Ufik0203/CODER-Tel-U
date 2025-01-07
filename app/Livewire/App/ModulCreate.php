@@ -31,6 +31,7 @@ class ModulCreate extends Component
     public $type;
     #[Validate('nullable', message: "Link tidak wajib di isi", translate: true)]
     public $link;
+    #[Validate('required', message: "File wajib di isi", translate: true)]
     #[Validate('nullable', message: "Jenis File tidak wajib di isi", translate: true)]
     #[Validate('file', message: "Wajib file yang di upload", translate: true)]
     #[Validate('mimes:pptx,pdf,ppt,xlsx,docx,doc,txt', message: "File yang di upload salah", translate: true)]

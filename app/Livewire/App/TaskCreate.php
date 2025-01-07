@@ -29,7 +29,7 @@ class TaskCreate extends Component
         'name' => 'required|min:3|max:255',
         'due_date' => 'required',
         'section' => 'required',
-        'description' => 'required',
+        'description' => 'required|min:10',
         'file' => 'nullable|mimes:pdf|max:5120'
     ];
 
@@ -42,7 +42,7 @@ class TaskCreate extends Component
             'due_date.required' => 'Batas waktu pengumpulan wajib diisi',
             'section.required' => 'Pertemuan wajib diisis',
             'description.required' => 'Deskripsi wajiob diisi',
-            // 'description.min' => 'Deskripsi terlalu sedikit',
+            'description.min' => 'Deskripsi terlalu sedikit',
             'file.mimes' => 'File wajib berupa PDF',
             'file.max' => 'File maksimal 5 MB'
         ];
