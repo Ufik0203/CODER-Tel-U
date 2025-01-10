@@ -3,9 +3,12 @@
 namespace Tests\Feature\Meeting;
 
 use App\Models\Division;
+use App\Models\Label;
 use App\Models\Meeting;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -23,6 +26,20 @@ class DestroyMeetingTest extends TestCase
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
+
+        // Admin - Ketua Division
+        $user = User::factory()->create([
+            'name' => 'Ketua ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name)) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['admin'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
+            'division_id' => $division->id,
+        ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
+
 
         // Data input untuk membuat meeting
         $data = [

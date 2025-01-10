@@ -34,6 +34,7 @@ class User extends Authenticatable
         'phone_number',
         'avatar',
         'github',
+        'tag',
         'identity_code',
         'google_id'
     ];

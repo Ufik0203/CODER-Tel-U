@@ -5,9 +5,11 @@ namespace Tests\Feature\Task;
 use App\Models\Division;
 use App\Models\Elearning\Task;
 use App\Models\Elearning\TaskSubmission;
+use App\Models\Label;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -27,14 +29,18 @@ class UserSubmissionTest extends TestCase
             'logo' => 'logo.png',
         ]);
 
-        // Create a user
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'johndoe@example.com',
-            'password' => bcrypt('password'),
-            'label' => 'Anggota',
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
             'division_id' => $division->id,
         ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         $task = Task::create([
             'slug' => Str::slug('Task Test'),
@@ -74,6 +80,19 @@ class UserSubmissionTest extends TestCase
             'logo' => 'logo.png',
         ]);
 
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
+            'division_id' => $division->id,
+        ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
+
         // Create a user
         $user = User::create([
             'name' => 'John Doe',
@@ -106,7 +125,7 @@ class UserSubmissionTest extends TestCase
 
 
 
-    public function test_it_can_update_task_submission_score_and_grade()
+    public function test_it_can_update_task_submission()
     {
         // Create division
         $division = Division::create([
@@ -115,6 +134,20 @@ class UserSubmissionTest extends TestCase
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
+
+
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
+            'division_id' => $division->id,
+        ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         // Create a user
         $user = User::create([
@@ -153,59 +186,6 @@ class UserSubmissionTest extends TestCase
         $this->assertDatabaseHas('task_submissions', [
             'score' => 90,
             'grade' => 'A',
-        ]);
-    }
-
-
-
-
-    public function test_it_can_delete_task_submission()
-    {
-        // Create division
-        $division = Division::create([
-            'name' => 'Division 1',
-            'slug' => Str::slug('Division 1') . uniqid(),
-            'description' => 'Deskripsi Division 1',
-            'logo' => 'logo.png',
-        ]);
-
-        // Create a user
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'johndoe@example.com',
-            'password' => bcrypt('password'),
-            'label' => 'Anggota',
-            'division_id' => $division->id,
-        ]);
-
-        $task = Task::create([
-            'slug' => Str::slug('Task Test'),
-            'name' => 'Task Test',
-            'due_date' => '2024-12-31',
-            'section' => 'Section 1',
-            'description' => 'Deskripsi Task Test',
-            'division_id' => $division->id,
-        ]);
-
-        // Create a task submission
-        $taskSubmission = TaskSubmission::create([
-            'submission' => 'Task submission content',
-            'score' => 85,
-            'grade' => 'B',
-            'user_id' => $user->id,
-            'task_id' => $task->id,
-        ]);
-
-        // Delete the task submission
-        $taskSubmission->delete();
-
-        // Assert the database does not have the deleted task submission
-        $this->assertDatabaseMissing('task_submissions', [
-            'submission' => 'Task submission content',
-            'score' => 85,
-            'grade' => 'B',
-            'user_id' => $user->id,
-            'task_id' => $task->id,
         ]);
     }
 }

@@ -26,18 +26,27 @@
           <div class="grid grid-cols-1 gap-4 mb-3 lg:grid-cols-3">
             <div class="mb-3">
               <label for="title" class="block mb-2 font-light text-white">Judul Pertemuan</label>
-              <input type="text" name="title" id="title" wire:model='form.name'
+              <input type="text" name="name" id="title" wire:model='form.name'
                 class="w-full px-3 py-3 text-white rounded-lg bg-lightGray">
+              @error('name')
+                <small class="text-red-500">{{ $message }}</small>
+              @enderror
             </div>
             <div class="mb-3">
               <label for="date-time" class="block mb-2 font-light text-white">Tanggal & Waktu</label>
               <input type="datetime-local" name="date-time" id="date-time"
                 class="w-full px-3 py-3 text-white rounded-lg bg-lightGray" wire:model="form.date_time">
+              @error('date-time')
+                <small class="text-red-500">{{ $message }}</small>
+              @enderror
             </div>
             <div class="mb-3">
               <label for="end-date" class="block mb-2 font-light text-white">Waktu Berakhir</label>
               <input type="time" name="end-date" id="end-date"
                 class="w-full px-3 py-3 text-white rounded-lg bg-lightGray" wire:model="form.end_time">
+              @error('end-date')
+                <small class="text-red-500">{{ $message }}</small>
+              @enderror
             </div>
             <div class="mb-3">
               <label for="type" class="block mb-2 font-light text-white">Tipe Pertemuan</label>
@@ -47,7 +56,7 @@
                 <option value="offline">Offline</option>
               </select>
               @error('form.type')
-                <span class="error">{{ $message }}</span>
+                <small class="text-red-500">{{ $message }}</small>
               @enderror
             </div>
             @if ($selectTypeMeeting == 'online')
@@ -56,7 +65,7 @@
                 <input type="link" name="link" id="link" wire:model='form.link'
                   class="w-full px-3 py-3 text-white rounded-lg bg-lightGray" placeholder="https://">
                 @error('form.link')
-                  <span class="error">{{ $message }}</span>
+                  <small class="text-red-500">{{ $message }}</small>
                 @enderror
               </div>
             @endif
@@ -67,7 +76,7 @@
                   class="w-full px-3 py-3 text-white rounded-lg bg-lightGray" wire:model='form.location'
                   placeholder="Lab. Komputer">
                 @error('form.location')
-                  <span class="error">{{ $message }}</span>
+                  <small class="text-red-500">{{ $message }}</small>
                 @enderror
               </div>
             @endif
@@ -76,6 +85,9 @@
             <label for="description" class="block mb-2 font-light text-white">Deskripsi</label>
             <textarea name="description" id="description" cols="30" rows="5"
               class="w-full px-3 py-3 text-white rounded-lg bg-lightGray" wire:model="form.description"></textarea>
+            @error('description')
+              <small class="text-red-500">{{ $message }}</small>
+            @enderror
           </div>
         </div>
       </div>

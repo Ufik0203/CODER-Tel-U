@@ -3,10 +3,13 @@
 namespace Tests\Feature\Presence;
 
 use App\Models\Division;
+use App\Models\Label;
 use App\Models\Presence;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Tests\TestCase;
@@ -37,6 +40,20 @@ class CreatePresenceTest extends TestCase
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
+
+        // Admin - Ketua Division
+        $user = User::factory()->create([
+            'name' => 'Ketua ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name)) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['admin'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
+            'division_id' => $division->id,
+        ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
+
         // Valid data for presence
         $data = [
             "presence_date" => "2025-01-05 10:00:00",
@@ -65,10 +82,23 @@ class CreatePresenceTest extends TestCase
         // Create division with unique slug
         $division = Division::create([
             'name' => 'Division 1',
-            'slug' => 'division-' . uniqid(), // Ensure unique slug
+            'slug' => 'division-' . uniqid(),
             'description' => 'Deskripsi Division 1',
             'logo' => 'logo.png',
         ]);
+
+        // Admin - Ketua Division
+        $user = User::factory()->create([
+            'name' => 'Ketua ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['admin'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
+            'division_id' => $division->id,
+        ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         // Invalid data for presence
         $invalidData = [
