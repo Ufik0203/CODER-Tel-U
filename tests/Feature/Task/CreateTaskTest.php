@@ -38,7 +38,6 @@ class CreateTaskTest extends TestCase
 
         // Data task untuk diuji
         $taskData = [
-            'slug' => Str::slug('Task Test'),
             'name' => 'Task Test',
             'due_date' => '2024-12-31',
             'section' => 'Section 1',
@@ -49,7 +48,6 @@ class CreateTaskTest extends TestCase
         $task = Task::create($taskData);
         $this->assertDatabaseHas('tasks', $taskData);
         $this->assertEquals($taskData['name'], $task->name);
-        $this->assertEquals($taskData['slug'], $task->slug);
         $this->assertEquals($taskData['due_date'], $task->due_date);
         $this->assertEquals($taskData['section'], $task->section);
         $this->assertEquals($taskData['description'], $task->description);

@@ -15,7 +15,8 @@ class FormMeetingCreate extends Form
     public $link;
     public $description;
 
-    public function rules(){
+    public function rules()
+    {
         return [
             "name" => ["required"],
             "date_time" => ["required"],

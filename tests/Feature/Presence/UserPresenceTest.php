@@ -3,11 +3,13 @@
 namespace Tests\Feature\Presence;
 
 use App\Models\Division;
+use App\Models\Label;
 use App\Models\Presence;
 use App\Models\User;
 use App\Models\UserPresence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Tests\TestCase;
 
@@ -27,15 +29,19 @@ class UserPresenceTest extends TestCase
             'logo' => 'logo.png',
         ]);
 
-        // Create a user
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'johndoe@example.com',
-            'password' => bcrypt('password'),
-            'label' => 'Anggota',
+
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
             'division_id' => $division->id,
         ]);
 
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         // Create a presence
         $presence = Presence::create([
@@ -72,14 +78,18 @@ class UserPresenceTest extends TestCase
             'logo' => 'logo.png',
         ]);
 
-        // Create a user
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'johndoe@example.com',
-            'password' => bcrypt('password'),
-            'label' => 'Anggota',
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
             'division_id' => $division->id,
         ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         // Create a presence
         $presence = Presence::create([
@@ -118,14 +128,18 @@ class UserPresenceTest extends TestCase
             'logo' => 'logo.png',
         ]);
 
-        // Create a user
-        $user = User::create([
-            'name' => 'John Doe',
-            'email' => 'johndoe@example.com',
-            'password' => bcrypt('password'),
-            'label' => 'Anggota',
+        // User - Anggota Division
+        $user = User::factory()->create([
+            'name' => 'Anggota ' . $division->name,
+            'email' => strtolower(str_replace(" ", "", $division->name . uniqid())) . '@gmail.com',
+            'password' => Hash::make('password'),
+            'label' => Label::LABEL_NAME['user'] . $division->name,
+            'identity_code' => 'ID-' . strtoupper(Str::random(10)),
             'division_id' => $division->id,
         ]);
+
+        // Autentikasi pengguna
+        $this->actingAs($user);
 
         // Create a presence
         $presence = Presence::create([
